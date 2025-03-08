@@ -111,12 +111,25 @@ router.get('/:id/file', async (req, res) => {
     if (!pdf) {
       return res.status(404).json({ error: 'PDF not found' });
     }
-    res.sendFile(path.resolve(pdf.filePath));
+    // Normalize the file path to replace Windows-style backslashes with forward slashes
+    const normalizedPath = pdf.filePath.replace(/\\/g, '/');
+    
+    // Build the absolute path. Assuming your 'data' folder is in the project root (i.e., /app/data)
+    // If this route file is in a subfolder, adjust the '..' as necessary.
+    const absolutePath = path.resolve(__dirname, '..', normalizedPath);
+    
+    res.sendFile(absolutePath, err => {
+      if (err) {
+        console.error('Error sending file:', err);
+        res.status(404).send('File not found');
+      }
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to download PDF' });
   }
 });
+
 
 // =========================
 //  GET /api/pdfs/:id

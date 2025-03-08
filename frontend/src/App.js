@@ -13,13 +13,13 @@ export default function App() {
   }, []);
 
   const fetchPdfs = async () => {
-    const res = await axios.get("http://localhost:3000/api/pdfs");
+    const res = await axios.get("http://localhost:3002/api/pdfs");
     setPdfs(res.data);
   };
 
   const handleSearch = async () => {
     const query = new URLSearchParams(search).toString();
-    const res = await axios.get(`http://localhost:3000/api/pdfs/search?${query}`);
+    const res = await axios.get(`http://localhost:3002/api/pdfs/search?${query}`);
     setPdfs(res.data);
   };
 
@@ -28,7 +28,7 @@ export default function App() {
     const data = new FormData();
     Object.keys(formData).forEach(key => data.append(key, formData[key]));
     if (file) data.append("pdf", file);
-    await axios.post("http://localhost:3000/api/pdfs", data, { headers: { "Content-Type": "multipart/form-data" } });
+    await axios.post("http://localhost:3002/api/pdfs", data, { headers: { "Content-Type": "multipart/form-data" } });
     fetchPdfs();
   };
 
@@ -60,7 +60,7 @@ export default function App() {
         {pdfs.map((pdf) => (
           <div key={pdf._id} className="pdf-item">
             <span>{pdf.title} - {pdf.courseCode} - {pdf.instructorName}</span>
-            <a href={`http://localhost:3000/api/pdfs/${pdf._id}/file`} target="_blank" className="view-link">View</a>
+            <a href={`http://localhost:3002/api/pdfs/${pdf._id}/file`} target="_blank" className="view-link">View</a>
           </div>
         ))}
       </div>
