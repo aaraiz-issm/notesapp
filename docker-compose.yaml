@@ -15,7 +15,7 @@ services:
       - MONGO_URI=mongodb://mongo:27017/mydatabase
     volumes:
       - ./backend:/app  # Mounts local backend files for development
-    command: npm run dev
+    command: node server.js
 
   mongo:
     image: mongo:latest
