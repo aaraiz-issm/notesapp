@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 3000
 
 # Start the app using your development command
-CMD ["npm", "run", "dev"]
+CMD ["node", "server.js"]
