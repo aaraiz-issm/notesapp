@@ -7,7 +7,7 @@ const pdfRoutes = require('./routes/pdfRoutes');
 const app = express();
 mongoose
   //mongodb+srv://masoodaaraiz:ug4Z0MWKAwwNBli9@notes-app.ki084.mongodb.net/?retryWrites=true&w=majority&appName=notes-app
-  .connect('mongodb+srv://masoodaaraiz:ug4Z0MWKAwwNBli9@notes-app.ki084.mongodb.net/?retryWrites=true&w=majority&appName=notes-app')
+  .connect('mongodb://mongo:27017/mydatabase')
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
