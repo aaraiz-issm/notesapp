@@ -1,27 +1,49 @@
+version: "3.9"
+
 services:
+  ########################################
+  #  FRONTEND SERVICE
+  ########################################
   frontend:
     build: ./frontend
     ports:
-      - "3001:3000"   # Host port 3001 maps to container's 3000
+      - "3001:3000"  # Host port 3001 -> Container port 3000
+    # Optional: If you want to edit frontend code locally and have those
+    # changes show up immediately in the container, you can mount
+    # the source code. Then also mount an anonymous volume over node_modules
+    # so it does not get overwritten by the host.
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm start
 
+  ########################################
+  #  BACKEND SERVICE
+  ########################################
   backend:
     build: ./backend
     ports:
-      - "3002:3000"   # Host port 3002 maps to container's 3000
+      - "3002:3000"  # Host port 3002 -> Container port 3000
     depends_on:
       - mongo
     environment:
       - MONGO_URI=mongodb://mongo:27017/mydatabase
+    # Mount the local backend folder so you can edit code,
+    # but protect container-installed node_modules with an anonymous volume.
     volumes:
-      - ./backend:/app  # Mounts local backend files for development
+      - ./backend:/app
+      - /app/node_modules
     command: node server.js
 
+  ########################################
+  #  MONGODB SERVICE
+  ########################################
   mongo:
     image: mongo:latest
     ports:
       - "27017:27017"
     volumes:
-      - mongo-data:/data/db
+      - mongo-data:/data/db  # Persist MongoDB data
 
 volumes:
   mongo-data:
